@@ -1,0 +1,8 @@
+<h1>Note Details</h1>
+<p><strong>Content:</strong> <%= @note.content %></p>
+<p><strong>Book ID:</strong> <%= @note.book_id %></p>
+<p><strong>User ID:</strong> <%= @note.user_id %></p>
+<p><strong>Book Club ID:</strong> <%= @note.book_club_id %></p>
+
+<%= link_to 'Edit', edit_note_path(@note) %> |
+<%= link_to 'Back to Notes', notes_path %>
