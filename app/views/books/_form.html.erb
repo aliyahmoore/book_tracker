@@ -1,6 +1,6 @@
 <h1>Add a New Book</h1>
 
-<%= form_with model: [@book_club, @book], local: true do |form| %>
+<%= form_with model: @book, local: true do |form| %>
   <%= form.label :title %>
   <%= form.text_field :title %>
 
@@ -10,8 +10,12 @@
   <%= form.label :genre %>
   <%= form.text_field :genre %>
 
-  <%= form.label :status, "Status (e.g., reading, completed)" %>
+  <%= form.label :status %>
   <%= form.select :status, ["reading", "completed"], prompt: "Select Status" %>
+
+  <%= form.label :book_club_id, "Select Book Club (Optional)" %>
+  <%= form.select :book_club_id, options_for_select(@book_clubs.collect { |bc| [bc.name, bc.id] }, prompt: "Choose a Book Club (Optional)"), include_blank: true %>
 
   <%= form.submit "Add Book", class: "btn btn-success" %>
 <% end %>
+

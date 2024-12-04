@@ -3,12 +3,9 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root "booktracker#index"
   get "/booktracker", to: "booktracker#index"
+  resources :books, only: [:index, :new, :create, :show, :edit, :update, :destroy]
   resources :book_clubs do
-    # Nested books under book clubs
-    resources :books, shallow: true do
-      # Nested notes under books
-      resources :notes, only: [:index, :new, :create]
-    end
+    resources :books, only: [:index, :new, :create]
   end
   resources :users, only: [:show]
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

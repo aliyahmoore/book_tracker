@@ -1,6 +1,6 @@
 class Book < ApplicationRecord
-  belongs_to :book_club
-  has_many :notes, dependent: :destroy
+  belongs_to :user
+  belongs_to :book_club, optional: true 
 
-  validates :title, :genre, :author, presence: true
+  validates :title, :author, :genre, :status, presence: true
 end
