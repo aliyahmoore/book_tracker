@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_03_200036) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_04_034615) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "book_clubs", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "book_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_book_clubs_on_book_id"
+  end
 
   create_table "books", force: :cascade do |t|
     t.string "genre"
