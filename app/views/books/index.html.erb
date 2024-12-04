@@ -1,15 +1,16 @@
-<h1>Books in <%= @book_club.name %></h1>
+<h1>Your Books</h1>
 
-<%= link_to "Add New Book", new_book_club_book_path(@book_club), class: "btn btn-primary" %>
+<%= link_to "Add New Book", new_book_path, class: "btn btn-primary" %>
 
 <ul>
   <% @books.each do |book| %>
     <li>
       <strong>Title:</strong> <%= book.title %> <br>
-      <strong>Author:</strong> <%= book.author %>
-      <%= link_to "View Notes", book_notes_path(book) %> |
-      <%= link_to "Edit", edit_book_club_book_path(@book_club, book) %> |
-      <%= link_to "Delete", book_club_book_path(@book_club, book), method: :delete, data: { confirm: "Are you sure?" } %>
+      <strong>Author:</strong> <%= book.author %> <br>
+      <strong>Book Club:</strong> <%= book.book_club ? book.book_club.name : "None" %> <br>
+      <%= link_to "Show", book_path(book) %> |
+      <%= link_to "Edit", edit_book_path(book) %> |
+      <%= link_to "Delete", book_path(book), method: :delete, data: { confirm: "Are you sure?" } %>
     </li>
   <% end %>
 </ul>

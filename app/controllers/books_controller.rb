@@ -1,38 +1,37 @@
 class BooksController < ApplicationController
-  before_action :authenticate_user! # Ensure user is logged in
-  before_action :set_book_club, only: [:index, :new, :create]
-  before_action :set_book, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
-  # GET /book_clubs/:book_club_id/books
+  # GET /books
   def index
-    @books = @book_club.books
+    @books = current_user.book_clubs.includes(:books).flat_map(&:books)
   end
 
   # GET /books/:id
   def show
-    @notes = @book.notes
   end
 
-  # GET /book_clubs/:book_club_id/books/new
+  # GET /books/new
   def new
-    @book = @book_club.books.new
+    @book = Book.new
+    @book_clubs = current_user.book_clubs # Allow the user to choose from their book clubs
   end
 
-  # POST /book_clubs/:book_club_id/books
+  # POST /books
   def create
-    @book = @book_club.books.build(book_params)
+    @book = Book.new(book_params)
     @book.user = current_user
 
     if @book.save
       redirect_to @book, notice: 'Book was successfully created.'
     else
-      render :new, status: :unprocessable_entity
+      @book_clubs = current_user.book_clubs # If creation fails, re-render with book clubs
+      render :new
     end
   end
 
   # GET /books/:id/edit
   def edit
-    @book = @book_club.books.find(params[:id])
+    @book_clubs = current_user.book_clubs # Allow the user to choose from their book clubs
   end
 
   # PATCH/PUT /books/:id
@@ -40,27 +39,24 @@ class BooksController < ApplicationController
     if @book.update(book_params)
       redirect_to @book, notice: 'Book was successfully updated.'
     else
-      render :edit, status: :unprocessable_entity
+      @book_clubs = current_user.book_clubs # If update fails, re-render with book clubs
+      render :edit
     end
   end
 
   # DELETE /books/:id
   def destroy
     @book.destroy
-    redirect_to book_club_books_path(@book.book_club), notice: 'Book was successfully deleted.'
+    redirect_to books_path, notice: 'Book was successfully deleted.'
   end
 
   private
-
-  def set_book_club
-    @book_club = BookClub.find(params[:book_club_id])
-  end
 
   def set_book
     @book = Book.find(params[:id])
   end
 
   def book_params
-    params.require(:book).permit(:title, :author, :genre, :notes, :start_date, :end_date, :status)
+    params.require(:book).permit(:title, :author, :genre, :status, :book_club_id)
   end
 end

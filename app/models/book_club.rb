@@ -1,6 +1,5 @@
 class BookClub < ApplicationRecord
   belongs_to :user
-  has_many :books, dependent: :destroy
-
-  validates :name, :description, presence: true
+  has_many :books
+  has_many :notes, through: :books
 end
