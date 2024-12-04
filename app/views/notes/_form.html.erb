@@ -1,0 +1,6 @@
+<%= form_with model: [@book, @note], local: true do |form| %>
+  <%= form.label :content, "Your Note" %>
+  <%= form.text_area :content, rows: 5 %>
+
+  <%= form.submit class: "btn btn-success" %>
+<% end %>

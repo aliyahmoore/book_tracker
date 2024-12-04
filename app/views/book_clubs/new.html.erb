@@ -1,0 +1,13 @@
+<h1>Create New Book Club</h1>
+
+<%= form_with model: @book_club, local: true do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name, class: "form-control" %>
+
+  <%= form.label :description %>
+  <%= form.text_area :description, class: "form-control" %>
+
+  <%= form.submit "Create Book Club", class: "btn btn-success" %>
+<% end %>
+
+<%= link_to "Back to Book Clubs", book_clubs_path, class: "btn btn-secondary" %>

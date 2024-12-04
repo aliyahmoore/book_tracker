@@ -1,0 +1,21 @@
+<h1><%= @book_club.name %></h1>
+
+<p><strong>Description:</strong> <%= @book_club.description %></p>
+
+<h2>Books in this Book Club:</h2>
+
+<% if @books.any? %>
+  <ul>
+    <% @books.each do |book| %>
+      <li>
+        <%= link_to book.title, book_club_book_path(@book_club, book) %>
+        <p><%= book.author %></p>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No books yet.</p>
+<% end %>
+
+<%= link_to "Edit Book Club", edit_book_club_path(@book_club), class: "btn btn-primary" %>
+<%= link_to "Back to Book Clubs", book_clubs_path, class: "btn btn-secondary" %>

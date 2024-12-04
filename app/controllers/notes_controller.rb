@@ -1,26 +1,25 @@
 class NotesController < ApplicationController
-  before_action :set_note, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :set_book
+  before_action :set_note, only: [:edit, :update, :destroy]
 
-  # GET /notes
+  # GET /books/:book_id/notes
   def index
-    @notes = Note.all
+    @notes = @book.notes
   end
 
-  # GET /notes/:id
-  def show
-  end
-
-  # GET /notes/new
+  # GET /books/:book_id/notes/new
   def new
-    @note = Note.new
+    @note = @book.notes.build
   end
 
-  # POST /notes
+  # POST /books/:book_id/notes
   def create
-    @note = Note.new(note_params)
+    @note = @book.notes.build(note_params)
+    @note.user = current_user
 
     if @note.save
-      redirect_to @note, notice: 'Note was successfully created.'
+      redirect_to book_notes_path(@book), notice: 'Note was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -33,7 +32,7 @@ class NotesController < ApplicationController
   # PATCH/PUT /notes/:id
   def update
     if @note.update(note_params)
-      redirect_to @note, notice: 'Note was successfully updated.'
+      redirect_to book_notes_path(@note.book), notice: 'Note was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -42,16 +41,20 @@ class NotesController < ApplicationController
   # DELETE /notes/:id
   def destroy
     @note.destroy
-    redirect_to notes_url, notice: 'Note was successfully destroyed.'
+    redirect_to book_notes_path(@note.book), notice: 'Note was successfully deleted.'
   end
 
   private
+
+  def set_book
+    @book = Book.find(params[:book_id])
+  end
 
   def set_note
     @note = Note.find(params[:id])
   end
 
   def note_params
-    params.require(:note).permit(:book_id, :user_id, :book_club_id, :content)
+    params.require(:note).permit(:content)
   end
 end

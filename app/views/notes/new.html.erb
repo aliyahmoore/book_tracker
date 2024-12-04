@@ -1,17 +1,3 @@
-<h1><%= action_name.capitalize %> Note</h1>
+<h1>Add a New Note</h1>
 
-<%= form_with(model: @note, local: true) do |form| %>
-  <%= form.label :content %>
-  <%= form.text_area :content %>
-
-  <%= form.label :book_id %>
-  <%= form.number_field :book_id %>
-
-  <%= form.label :user_id %>
-  <%= form.number_field :user_id %>
-
-  <%= form.label :book_club_id %>
-  <%= form.number_field :book_club_id %>
-
-  <%= form.submit %>
-<% end %>
+<%= render "form", book: @book, note: @note %>

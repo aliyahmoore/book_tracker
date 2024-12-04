@@ -1,0 +1,14 @@
+<h1>All Book Clubs</h1>
+
+<%= link_to "Create New Book Club", new_book_club_path, class: "btn btn-primary" %>
+
+<ul>
+  <% @book_clubs.each do |book_club| %>
+    <li>
+      <%= link_to book_club.name, book_club_path(book_club) %>
+      <p><%= book_club.description %></p>
+      <%= link_to "Edit", edit_book_club_path(book_club), class: "btn btn-secondary" %> |
+      <%= link_to "Delete", book_club_path(book_club), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+    </li>
+  <% end %>
+</ul>

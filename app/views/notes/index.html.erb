@@ -1,12 +1,14 @@
-<h1>Notes</h1>
-<%= link_to 'New Note', new_note_path %>
+<h1>Notes for <%= @book.title %></h1>
+
+<%= link_to "Add New Note", new_book_note_path(@book), class: "btn btn-primary" %>
 
 <ul>
   <% @notes.each do |note| %>
     <li>
-      <%= link_to note.content.truncate(30), note_path(note) %>
-      (<%= link_to 'Edit', edit_note_path(note) %> |
-       <%= link_to 'Delete', note_path(note), method: :delete, data: { confirm: 'Are you sure?' } %>)
+      <strong>Content:</strong> <%= note.content %> <br>
+      <strong>Created By:</strong> <%= note.user.username %>
+      <%= link_to "Edit", edit_book_note_path(@book, note) %> |
+      <%= link_to "Delete", book_note_path(@book, note), method: :delete, data: { confirm: "Are you sure?" } %>
     </li>
   <% end %>
 </ul>
