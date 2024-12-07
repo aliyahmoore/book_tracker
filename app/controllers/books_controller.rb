@@ -1,62 +1,67 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_book_clubs, only: [:new, :edit]
 
   # GET /books
   def index
-    @books = current_user.book_clubs.includes(:books).flat_map(&:books)
+    @books = Book.all
   end
 
   # GET /books/:id
   def show
+    @book = Book.find(params[:id])
   end
 
   # GET /books/new
   def new
-    @book = Book.new
-    @book_clubs = current_user.book_clubs # Allow the user to choose from their book clubs
+    @book = current_user.books.new
   end
 
   # POST /books
   def create
-    @book = Book.new(book_params)
-    @book.user = current_user
+    @book = current_user.books.new(book_params)
 
     if @book.save
-      redirect_to @book, notice: 'Book was successfully created.'
+      redirect_to @book
     else
-      @book_clubs = current_user.book_clubs # If creation fails, re-render with book clubs
-      render :new
+      set_book_clubs
+      render :new, status: :unprocessable_entity
     end
   end
 
   # GET /books/:id/edit
   def edit
-    @book_clubs = current_user.book_clubs # Allow the user to choose from their book clubs
+    @book = current_user.books.find(params[:id])
   end
 
   # PATCH/PUT /books/:id
   def update
+    @book = Book.find(params[:id])
+
     if @book.update(book_params)
-      redirect_to @book, notice: 'Book was successfully updated.'
+      redirect_to @book
     else
-      @book_clubs = current_user.book_clubs # If update fails, re-render with book clubs
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /books/:id
   def destroy
+    @book = Book.find(params[:id])
     @book.destroy
+
     redirect_to books_path, notice: 'Book was successfully deleted.'
   end
 
   private
-
   def set_book
-    @book = Book.find(params[:id])
+    @book = current_user.books.find(params[:id])
+  end
+
+  def set_book_clubs
+    @book_clubs = current_user.book_clubs
   end
 
   def book_params
-    params.require(:book).permit(:title, :author, :genre, :status, :book_club_id)
+    params.require(:book).permit(:title, :author, :genre, :status, :book_club_id, :notes, :start_date, :end_date)
   end
 end

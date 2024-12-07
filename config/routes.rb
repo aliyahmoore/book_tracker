@@ -3,10 +3,8 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root "booktracker#index"
   get "/booktracker", to: "booktracker#index"
-  resources :books, only: [:index, :new, :create, :show, :edit, :update, :destroy]
-  resources :book_clubs do
-    resources :books, only: [:index, :new, :create]
-  end
+  resources :books
+  resources :book_clubs
   resources :users, only: [:show]
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

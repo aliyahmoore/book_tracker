@@ -9,7 +9,7 @@ class BookClubsController < ApplicationController
 
   # GET /book_clubs/:id
   def show
-    @books = @book_club.books
+    @book_club = BookClub.find(params[:id])
   end
 
   # GET /book_clubs/new
